@@ -10,7 +10,7 @@
 
 <div id="player"></div>
 
-<h2 id="timer">10 seconds remaining</h2>
+<h2 id="timer">5:00 remaining</h2>
 
 <button id="continueBtn" disabled>
     Continue
@@ -21,7 +21,7 @@
 <script>
 
 let player;
-let timeLeft = 10;
+let timeLeft = 300;
 let playing = false;
 
 function onYouTubeIframeAPIReady() {
@@ -42,11 +42,8 @@ function onYouTubeIframeAPIReady() {
 function playerState(event) {
 
     if (event.data === YT.PlayerState.PLAYING) {
-
         playing = true;
-
     } else {
-
         playing = false;
     }
 }
@@ -57,9 +54,13 @@ setInterval(function() {
 
         timeLeft--;
 
-        document.getElementById("timer").innerText =
-            timeLeft + " seconds remaining";
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
 
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        document.getElementById("timer").innerText =
+            minutes + ":" + seconds + " remaining";
     }
 
     if (timeLeft <= 0) {
