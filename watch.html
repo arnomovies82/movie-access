@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Watch Video</title>
+
+    <style>
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        video {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 30px;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1 id="title">Loading...</h1>
+
+<video id="videoPlayer" controls playsinline>
+    Your browser does not support video playback.
+</video>
+
+
+<script>
+
+/* =====================================================
+   MOVIE SETTINGS
+   ===================================================== */
+
+const movies = {
+
+    movie1: {
+        title: "Movie 1",
+        video: "movie1.mp4"
+    },
+
+    movie2: {
+        title: "Movie 2",
+        video: "movie2.mp4"
+    },
+
+    movie3: {
+        title: "Movie 3",
+        video: "movie3.mp4"
+    }
+
+};
+
+
+/* =====================================================
+   DON'T EDIT BELOW THIS LINE
+   ===================================================== */
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const movieName = urlParams.get("v") || "movie1";
+
+const selectedMovie = movies[movieName];
+
+
+if (!selectedMovie) {
+
+    document.body.innerHTML =
+        "<h1>Video not found</h1>";
+
+} else {
+
+    document.getElementById("title").innerText =
+        selectedMovie.title;
+
+    document.getElementById("videoPlayer").src =
+        selectedMovie.video;
+
+}
+
+</script>
+
+</body>
+</html>
