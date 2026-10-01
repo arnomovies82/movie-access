@@ -1,106 +1,200 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arno Movies</title>
 
-    <style>
-        body {
-            background: #111;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 40px 20px;
-        }
+<meta charset="UTF-8">
 
-        h1 {
-            font-size: 32px;
-        }
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-        .subscribe-btn {
-            display: inline-block;
-            background: #ff0000;
-            color: white;
-            padding: 16px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 20px;
-            font-weight: bold;
-            margin: 25px 0;
-        }
+<title>Arno Movies</title>
 
-        #locked {
-            display: block;
-        }
+<style>
 
-        #unlocked {
-            display: none;
-        }
+body {
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 25px 15px;
+}
 
-        .continue-btn {
-            background: white;
-            color: black;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-    </style>
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    margin-top: 25px;
+}
+
+.subscribe-btn {
+    display: inline-block;
+    background: #ff0000;
+    color: white;
+    padding: 16px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 19px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+#watchSection {
+    display: none;
+}
+
+#player {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+}
+
+#timer {
+    font-size: 30px;
+    margin: 20px;
+}
+
+#status {
+    font-size: 18px;
+    margin: 15px;
+}
+
+button {
+    padding: 14px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+#startBtn {
+    background: white;
+    color: black;
+}
+
+#continueBtn {
+    background: white;
+    color: black;
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<div id="locked">
 
-    <h1>🎬 Arno Movies</h1>
+<!-- ==============================
+     SUBSCRIBE SECTION
+     ============================== -->
 
-    <h2>🔒 Subscribe to Unlock</h2>
+<div id="subscribeSection">
 
-    <p>
-        Visit our YouTube channel and subscribe.
-    </p>
+<h1>🎬 Arno Movies</h1>
 
-    <a
-        class="subscribe-btn"
-        href="https://youtube.com/@arno_movies_82"
-        target="_blank"
-        onclick="markVisited()">
+<h2>🔒 Subscribe to Unlock</h2>
 
-        🔴 Subscribe to Arno Movies
+<p>
+Visit our YouTube channel and subscribe.
+</p>
 
-    </a>
+<a
+class="subscribe-btn"
+href="https://youtube.com/@arno_movies_82"
+target="_blank"
+onclick="channelClicked()">
 
-    <p>
-        After subscribing, come back to this page.
-    </p>
+🔴 Subscribe to Arno Movies
+
+</a>
+
+<p>
+After subscribing, return to this page.
+</p>
+
+<p id="returnMessage">
+🔒 Locked
+</p>
+
+</div>
+
+
+<!-- ==============================
+     WATCH SECTION
+     ============================== -->
+
+<div id="watchSection">
+
+<h1>▶️ Watch to Continue</h1>
+
+<div id="player"></div>
+
+<div id="status">
+Press Play to start.
+</div>
+
+<div id="timer">
+5:00 remaining
+</div>
+
+<button id="continueBtn" disabled>
+Continue
+</button>
 
 </div>
 
 
-<div id="unlocked">
-
-    <h1>✅ Unlocked</h1>
-
-    <p>
-        You visited our YouTube channel.
-    </p>
-
-    <button
-        class="continue-btn"
-        onclick="goNext()">
-
-        Continue
-
-    </button>
-
-</div>
+<script src="https://www.youtube.com/iframe_api"></script>
 
 
 <script>
 
-function markVisited() {
+/* ==========================================
+   MOVIE SETTINGS
+   ========================================== */
+
+const movies = {
+
+    movie1: {
+        youtube: "DEvz0fdvP5s"
+    },
+
+    movie2: {
+        youtube: "YOUR_MOVIE_2_YOUTUBE_ID"
+    },
+
+    movie3: {
+        youtube: "YOUR_MOVIE_3_YOUTUBE_ID"
+    }
+
+};
+
+
+/* ==========================================
+   GET MOVIE FROM URL
+   ========================================== */
+
+const urlParams =
+new URLSearchParams(window.location.search);
+
+const movieName =
+urlParams.get("v") || "movie1";
+
+const selectedMovie =
+movies[movieName];
+
+
+/* ==========================================
+   SUBSCRIBE / CHANNEL VISIT
+   ========================================== */
+
+function channelClicked() {
 
     sessionStorage.setItem(
         "arnoChannelVisited",
@@ -110,33 +204,210 @@ function markVisited() {
 }
 
 
-function checkVisited() {
+/* ==========================================
+   CHECK IF CHANNEL WAS VISITED
+   ========================================== */
 
-    if (
-        sessionStorage.getItem("arnoChannelVisited")
-        === "true"
-    ) {
+function checkChannelVisit() {
 
-        document.getElementById("locked").style.display =
-            "none";
+    const visited =
+    sessionStorage.getItem(
+        "arnoChannelVisited"
+    );
 
-        document.getElementById("unlocked").style.display =
-            "block";
+    if (visited === "true") {
+
+        document.getElementById(
+            "subscribeSection"
+        ).style.display = "none";
+
+        document.getElementById(
+            "watchSection"
+        ).style.display = "block";
 
     }
 
 }
 
 
-function goNext() {
+/* ==========================================
+   YOUTUBE PLAYER
+   ========================================== */
 
-    window.location.href =
-        "index.html?v=movie1";
+let player;
+
+let timeLeft = 300;
+
+let isPlaying = false;
+
+let finished = false;
+
+
+function onYouTubeIframeAPIReady() {
+
+    if (!selectedMovie) {
+
+        document.body.innerHTML =
+        "<h1>Video not found</h1>";
+
+        return;
+
+    }
+
+
+    player = new YT.Player(
+        "player",
+        {
+
+            width: "560",
+
+            height: "315",
+
+            videoId:
+            selectedMovie.youtube,
+
+            playerVars: {
+                rel: 0
+            },
+
+            events: {
+
+                onReady: function() {
+
+                    document.getElementById(
+                        "status"
+                    ).innerText =
+                    "Press Play to start.";
+
+                },
+
+
+                onStateChange:
+                function(event) {
+
+                    if (
+                        event.data ===
+                        YT.PlayerState.PLAYING
+                    ) {
+
+                        isPlaying = true;
+
+                        document.getElementById(
+                            "status"
+                        ).innerText =
+                        "Video playing — timer running";
+
+                    }
+
+                    else {
+
+                        isPlaying = false;
+
+                        if (!finished) {
+
+                            document.getElementById(
+                                "status"
+                            ).innerText =
+                            "Video paused — timer stopped";
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
 
 }
 
 
-checkVisited();
+/* ==========================================
+   5 MINUTE TIMER
+   ========================================== */
+
+setInterval(function() {
+
+    if (
+        isPlaying &&
+        timeLeft > 0 &&
+        !finished
+    ) {
+
+        timeLeft--;
+
+        const minutes =
+        Math.floor(timeLeft / 60);
+
+        const seconds =
+        timeLeft % 60;
+
+        const displaySeconds =
+        seconds < 10
+        ? "0" + seconds
+        : seconds;
+
+        document.getElementById(
+            "timer"
+        ).innerText =
+        minutes +
+        ":" +
+        displaySeconds +
+        " remaining";
+
+    }
+
+
+    if (
+        timeLeft <= 0 &&
+        !finished
+    ) {
+
+        finished = true;
+
+        isPlaying = false;
+
+        document.getElementById(
+            "timer"
+        ).innerText =
+        "5 minutes completed!";
+
+        document.getElementById(
+            "status"
+        ).innerText =
+        "You can continue.";
+
+        document.getElementById(
+            "continueBtn"
+        ).disabled = false;
+
+    }
+
+}, 1000);
+
+
+/* ==========================================
+   CONTINUE TO MOVIE PLAYER
+   ========================================== */
+
+document.getElementById(
+    "continueBtn"
+).onclick = function() {
+
+    window.location.href =
+    "watch.html?v=" +
+    encodeURIComponent(movieName);
+
+};
+
+
+/* ==========================================
+   START
+   ========================================== */
+
+checkChannelVisit();
 
 </script>
 
