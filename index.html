@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Arno Movies</title>
     <style>
         body {
@@ -11,20 +13,16 @@
             text-align: center;
             padding: 30px;
         }
-        button {
-            padding: 15px 25px;
+        #subscribeBox {
+            margin: 30px auto;
+        }
+        #continueBtn {
+            padding: 14px 25px;
             font-size: 18px;
             border: none;
             border-radius: 8px;
-            margin: 10px;
             cursor: pointer;
-        }
-        #subscribeBtn {
-            background: #ff0000;
-            color: white;
-        }
-        #continueBtn {
-            background: #ffffff;
+            background: white;
             color: black;
         }
         #continueBtn:disabled {
@@ -37,26 +35,35 @@
     <h1>🎬 Arno Movies</h1>
     <h2>Subscribe to Continue</h2>
     <p>
-        Please subscribe to our YouTube channel before continuing.
+        Please subscribe to our YouTube channel.
     </p>
-    <button id="subscribeBtn">
-        🔴 Subscribe to Arno Movies
-    </button>
+    <!-- OFFICIAL YOUTUBE SUBSCRIBE BUTTON -->
+    <div id="subscribeBox">
+        <div class="g-ytsubscribe"
+             data-channelid="UC-_nr3xQDeoMjZjcklJ2JiA"
+             data-layout="full"
+             data-theme="dark"
+             data-count="default">
+        </div>
+    </div>
     <br>
     <button id="continueBtn" disabled>
-        ✅ I Have Subscribed
+        Continue
     </button>
-<script>
-document.getElementById("subscribeBtn").onclick = function() {
-    window.open(
-        "https://youtube.com/@arno_movies_82",
-        "_blank"
-    );
-    document.getElementById("continueBtn").disabled = false;
-};
-document.getElementById("continueBtn").onclick = function() {
-    alert("Subscription step completed!");
-};
-</script>
+    <!-- YOUTUBE SUBSCRIBE WIDGET -->
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <script>
+        /*
+        IMPORTANT:
+        The official YouTube button does NOT provide
+        your website with the subscriber's status.
+        Therefore this button cannot automatically
+        unlock the page after subscription.
+        */
+        document.getElementById("continueBtn").onclick = function() {
+            window.location.href =
+                "watch.html?v=movie1";
+        };
+    </script>
 </body>
 </html>
