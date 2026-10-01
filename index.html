@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Arno Movies</title>
 
     <style>
@@ -12,29 +11,40 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 30px 15px;
+            padding: 40px 20px;
         }
 
-        .subscribe {
+        h1 {
+            font-size: 32px;
+        }
+
+        .subscribe-btn {
             display: inline-block;
             background: #ff0000;
             color: white;
-            padding: 15px 25px;
+            padding: 16px 28px;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 19px;
+            font-size: 20px;
             font-weight: bold;
-            margin: 20px;
+            margin: 25px 0;
         }
 
-        #unlockBtn {
+        #locked {
+            display: block;
+        }
+
+        #unlocked {
             display: none;
+        }
+
+        .continue-btn {
             background: white;
             color: black;
-            padding: 14px 25px;
-            font-size: 18px;
             border: none;
+            padding: 15px 30px;
             border-radius: 8px;
+            font-size: 18px;
             cursor: pointer;
         }
     </style>
@@ -42,78 +52,91 @@
 
 <body>
 
-<h1>🎬 Arno Movies</h1>
+<div id="locked">
 
-<h2>Subscribe to Continue</h2>
+    <h1>🎬 Arno Movies</h1>
 
-<p>
-    Step 1: Visit our YouTube channel and subscribe.
-</p>
+    <h2>🔒 Subscribe to Unlock</h2>
 
-<a
-    class="subscribe"
-    href="https://youtube.com/@arno_movies_82"
-    target="_blank"
-    onclick="channelOpened()">
+    <p>
+        Visit our YouTube channel and subscribe.
+    </p>
 
-    🔴 Subscribe to Arno Movies
+    <a
+        class="subscribe-btn"
+        href="https://youtube.com/@arno_movies_82"
+        target="_blank"
+        onclick="markVisited()">
 
-</a>
+        🔴 Subscribe to Arno Movies
 
-<p id="message">
-    You must visit our YouTube channel first.
-</p>
+    </a>
 
-<button id="unlockBtn" onclick="continueToVideo()">
-    ✅ Continue
-</button>
+    <p>
+        After subscribing, come back to this page.
+    </p>
+
+</div>
+
+
+<div id="unlocked">
+
+    <h1>✅ Unlocked</h1>
+
+    <p>
+        You visited our YouTube channel.
+    </p>
+
+    <button
+        class="continue-btn"
+        onclick="goNext()">
+
+        Continue
+
+    </button>
+
+</div>
 
 
 <script>
 
-function channelOpened() {
+function markVisited() {
 
     sessionStorage.setItem(
-        "channelVisited",
-        "yes"
+        "arnoChannelVisited",
+        "true"
     );
 
 }
 
 
-/* Check when visitor returns */
+function checkVisited() {
 
-window.addEventListener("pageshow", function() {
+    if (
+        sessionStorage.getItem("arnoChannelVisited")
+        === "true"
+    ) {
 
-    checkChannel();
+        document.getElementById("locked").style.display =
+            "none";
 
-});
-
-
-function checkChannel() {
-
-    const visited =
-        sessionStorage.getItem("channelVisited");
-
-    if (visited === "yes") {
-
-        document.getElementById("unlockBtn").style.display =
-            "inline-block";
-
-        document.getElementById("message").innerText =
-            "✅ You visited our YouTube channel. You can continue.";
+        document.getElementById("unlocked").style.display =
+            "block";
 
     }
 
 }
 
 
-function continueToVideo() {
+function goNext() {
 
     window.location.href =
         "index.html?v=movie1";
 
 }
+
+
+checkVisited();
 
 </script>
 
