@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arno Movies</title>
 
 <style>
-
 body {
     background: #111;
     color: white;
@@ -23,13 +18,9 @@ h1 {
     font-size: 32px;
 }
 
-h2 {
-    margin-top: 25px;
-}
-
-.subscribe-btn {
+.subscribe-btn,
+#downloadBtn {
     display: inline-block;
-    background: #ff0000;
     color: white;
     padding: 16px 25px;
     border-radius: 8px;
@@ -37,6 +28,15 @@ h2 {
     font-size: 19px;
     font-weight: bold;
     margin: 20px 0;
+}
+
+.subscribe-btn {
+    background: #ff0000;
+}
+
+#downloadBtn {
+    display: none;
+    background: #00c853;
 }
 
 #watchSection {
@@ -64,45 +64,20 @@ button {
     font-size: 18px;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
-    margin: 10px;
 }
-
-#startBtn {
-    background: white;
-    color: black;
-}
-
-#continueBtn {
-    background: white;
-    color: black;
-}
-
-button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
 </style>
-
 </head>
 
 <body>
 
-
-<!-- ==============================
-     SUBSCRIBE SECTION
-     ============================== -->
-
+<!-- STEP 1 -->
 <div id="subscribeSection">
 
 <h1>🎬 Arno Movies</h1>
 
 <h2>🔒 Subscribe to Unlock</h2>
 
-<p>
-Visit our YouTube channel and subscribe.
-</p>
+<p>Visit our YouTube channel and subscribe.</p>
 
 <a
 class="subscribe-btn"
@@ -114,21 +89,14 @@ onclick="channelClicked()">
 
 </a>
 
-<p>
-After subscribing, return to this page.
-</p>
+<p>After subscribing, return to this page.</p>
 
-<p id="returnMessage">
-🔒 Locked
-</p>
+<p>🔒 Locked</p>
 
 </div>
 
 
-<!-- ==============================
-     WATCH SECTION
-     ============================== -->
-
+<!-- STEP 2 -->
 <div id="watchSection">
 
 <h1>▶️ Watch to Continue</h1>
@@ -143,56 +111,31 @@ Press Play to start.
 5:00 remaining
 </div>
 
-<button id="continueBtn" disabled>
-Continue
-</button>
+
+<!-- DOWNLOAD BUTTON -->
+
+<a
+id="downloadBtn"
+href="https://fast-dl.one/dl/3077d2"
+target="_blank">
+
+⬇️ Download Movie
+
+</a>
 
 </div>
 
 
 <script src="https://www.youtube.com/iframe_api"></script>
 
-
 <script>
 
-/* ==========================================
-   MOVIE SETTINGS
-   ========================================== */
-
-const movies = {
-
-    movie1: {
-        youtube: "DEvz0fdvP5s"
-    },
-
-    movie2: {
-        youtube: "YOUR_MOVIE_2_YOUTUBE_ID"
-    },
-
-    movie3: {
-        youtube: "YOUR_MOVIE_3_YOUTUBE_ID"
-    }
-
-};
-
-
-/* ==========================================
-   GET MOVIE FROM URL
-   ========================================== */
-
-const urlParams =
-new URLSearchParams(window.location.search);
-
 const movieName =
-urlParams.get("v") || "movie1";
-
-const selectedMovie =
-movies[movieName];
+new URLSearchParams(window.location.search).get("v")
+|| "movie1";
 
 
-/* ==========================================
-   SUBSCRIBE / CHANNEL VISIT
-   ========================================== */
+/* CHANNEL VISIT */
 
 function channelClicked() {
 
@@ -204,9 +147,7 @@ function channelClicked() {
 }
 
 
-/* ==========================================
-   CHECK IF CHANNEL WAS VISITED
-   ========================================== */
+/* CHECK CHANNEL VISIT */
 
 function checkChannelVisit() {
 
@@ -230,57 +171,32 @@ function checkChannelVisit() {
 }
 
 
-/* ==========================================
-   YOUTUBE PLAYER
-   ========================================== */
+/* YOUTUBE VIDEO */
 
 let player;
 
-let timeLeft = 300;
-
 let isPlaying = false;
+
+let timeLeft = 300;
 
 let finished = false;
 
 
 function onYouTubeIframeAPIReady() {
 
-    if (!selectedMovie) {
-
-        document.body.innerHTML =
-        "<h1>Video not found</h1>";
-
-        return;
-
-    }
-
-
     player = new YT.Player(
         "player",
         {
-
             width: "560",
-
             height: "315",
 
-            videoId:
-            selectedMovie.youtube,
+            videoId: "DEvz0fdvP5s",
 
             playerVars: {
                 rel: 0
             },
 
             events: {
-
-                onReady: function() {
-
-                    document.getElementById(
-                        "status"
-                    ).innerText =
-                    "Press Play to start.";
-
-                },
-
 
                 onStateChange:
                 function(event) {
@@ -324,11 +240,10 @@ function onYouTubeIframeAPIReady() {
 }
 
 
-/* ==========================================
-   5 MINUTE TIMER
-   ========================================== */
+/* TIMER */
 
-setInterval(function() {
+setInterval(
+function() {
 
     if (
         isPlaying &&
@@ -360,6 +275,8 @@ setInterval(function() {
     }
 
 
+    /* AFTER 5 MINUTES */
+
     if (
         timeLeft <= 0 &&
         !finished
@@ -369,43 +286,33 @@ setInterval(function() {
 
         isPlaying = false;
 
+
         document.getElementById(
             "timer"
         ).innerText =
-        "5 minutes completed!";
+        "✅ 5 minutes completed!";
+
 
         document.getElementById(
             "status"
         ).innerText =
-        "You can continue.";
+        "Download unlocked!";
+
+
+        /* SHOW DOWNLOAD BUTTON */
 
         document.getElementById(
-            "continueBtn"
-        ).disabled = false;
+            "downloadBtn"
+        ).style.display =
+        "inline-block";
 
     }
 
-}, 1000);
+},
+1000);
 
 
-/* ==========================================
-   CONTINUE TO MOVIE PLAYER
-   ========================================== */
-
-document.getElementById(
-    "continueBtn"
-).onclick = function() {
-
-    window.location.href =
-    "watch.html?v=" +
-    encodeURIComponent(movieName);
-
-};
-
-
-/* ==========================================
-   START
-   ========================================== */
+/* START */
 
 checkChannelVisit();
 
