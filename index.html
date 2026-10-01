@@ -2,68 +2,85 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Arno Movies</title>
+
     <style>
         body {
             background: #111;
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 30px;
+            padding: 30px 15px;
         }
-        #subscribeBox {
-            margin: 30px auto;
+
+        h1 {
+            font-size: 32px;
         }
-        #continueBtn {
+
+        .subscribe {
+            display: inline-block;
+            background: #ff0000;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 19px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .subscribe:hover {
+            background: #cc0000;
+        }
+
+        .confirm {
+            display: block;
+            margin: 15px auto;
             padding: 14px 25px;
             font-size: 18px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            background: white;
-            color: black;
-        }
-        #continueBtn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
         }
     </style>
 </head>
+
 <body>
+
     <h1>🎬 Arno Movies</h1>
+
     <h2>Subscribe to Continue</h2>
+
     <p>
-        Please subscribe to our YouTube channel.
+        Subscribe to our YouTube channel to continue.
     </p>
-    <!-- OFFICIAL YOUTUBE SUBSCRIBE BUTTON -->
-    <div id="subscribeBox">
-        <div class="g-ytsubscribe"
-             data-channelid="UC-_nr3xQDeoMjZjcklJ2JiA"
-             data-layout="full"
-             data-theme="dark"
-             data-count="default">
-        </div>
-    </div>
-    <br>
-    <button id="continueBtn" disabled>
-        Continue
+
+    <a
+        class="subscribe"
+        href="https://youtube.com/@arno_movies_82"
+        target="_blank">
+        🔴 Subscribe to Arno Movies
+    </a>
+
+    <button
+        class="confirm"
+        onclick="continueToVideo()">
+        ✅ I Have Subscribed
     </button>
-    <!-- YOUTUBE SUBSCRIBE WIDGET -->
-    <script src="https://apis.google.com/js/platform.js"></script>
+
+
     <script>
-        /*
-        IMPORTANT:
-        The official YouTube button does NOT provide
-        your website with the subscriber's status.
-        Therefore this button cannot automatically
-        unlock the page after subscription.
-        */
-        document.getElementById("continueBtn").onclick = function() {
+
+        function continueToVideo() {
+
             window.location.href =
                 "watch.html?v=movie1";
-        };
+
+        }
+
     </script>
+
 </body>
 </html>
