@@ -2,42 +2,46 @@
 <html>
 <head>
     <title>Movie Access</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 700px;
+            height: 400px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
 
     <h1>Watch to Continue</h1>
 
-    <p>Watch the video before continuing.</p>
+    <p>Watch this video for 5 minutes.</p>
 
-    <div id="player"></div>
+    <iframe
+        src="https://www.youtube.com/embed/DEvz0fdvP5s"
+        title="YouTube video"
+        frameborder="0"
+        allowfullscreen>
+    </iframe>
 
-    <p id="timer">Loading...</p>
+    <p id="timer">5:00 remaining</p>
 
     <button id="continueBtn" disabled>
         Continue
     </button>
-
-    <script>
-        const videos = {
-            movie1: {
-                youtube: "DEvz0fdvP5s",
-                destination: "movie1.html"
-            }
-        };
-
-        const params = new URLSearchParams(window.location.search);
-        const movie = params.get("v") || "movie1";
-
-        const selected = videos[movie];
-
-        if (!selected) {
-            document.body.innerHTML = "<h1>Video not found</h1>";
-        } else {
-            document.getElementById("timer").innerText =
-                "Your video is ready.";
-        }
-    </script>
 
 </body>
 </html>
