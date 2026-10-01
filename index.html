@@ -1,85 +1,157 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Access</title>
+
+    <style>
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #player {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px auto;
+        }
+
+        #timer {
+            font-size: 28px;
+            margin: 20px;
+        }
+
+        #status {
+            font-size: 18px;
+            margin: 10px;
+        }
+
+        button {
+            padding: 14px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 
-<body style="text-align:center; font-family:Arial;">
+<body>
 
-<h1>Watch Video</h1>
+    <h1>Watch Video to Continue</h1>
 
-<div id="player"></div>
+    <div id="player"></div>
 
-<h2 id="timer">5:00 remaining</h2>
+    <div id="status">Press Play to start</div>
 
-<button id="continueBtn" disabled>
-    Continue
-</button>
+    <div id="timer">5:00 remaining</div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
+    <button id="continueBtn" disabled>
+        Continue
+    </button>
 
-<script>
+    <script src="https://www.youtube.com/iframe_api"></script>
 
-let player;
-let timeLeft = 300;
-let playing = false;
+    <script>
 
-function onYouTubeIframeAPIReady() {
+        let player;
+        let timeLeft = 300;
+        let isPlaying = false;
+        let finished = false;
 
-    player = new YT.Player('player', {
+        function onYouTubeIframeAPIReady() {
 
-        height: '315',
-        width: '560',
+            player = new YT.Player("player", {
 
-        videoId: 'DEvz0fdvP5s',
+                width: "560",
+                height: "315",
 
-        events: {
-            'onStateChange': playerState
+                videoId: "DEvz0fdvP5s",
+
+                playerVars: {
+                    rel: 0
+                },
+
+                events: {
+                    onReady: function() {
+                        document.getElementById("status").innerText =
+                            "Press Play to start the timer";
+                    },
+
+                    onStateChange: function(event) {
+
+                        if (event.data === YT.PlayerState.PLAYING) {
+
+                            isPlaying = true;
+
+                            document.getElementById("status").innerText =
+                                "Video playing — timer running";
+
+                        } else {
+
+                            isPlaying = false;
+
+                            if (!finished) {
+                                document.getElementById("status").innerText =
+                                    "Video paused — timer stopped";
+                            }
+                        }
+                    }
+                }
+            });
         }
-    });
-}
 
-function playerState(event) {
 
-    if (event.data === YT.PlayerState.PLAYING) {
-        playing = true;
-    } else {
-        playing = false;
-    }
-}
+        setInterval(function() {
 
-setInterval(function() {
+            if (isPlaying && timeLeft > 0 && !finished) {
 
-    if (playing && timeLeft > 0) {
+                timeLeft--;
 
-        timeLeft--;
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
 
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
+                let displaySeconds =
+                    seconds < 10 ? "0" + seconds : seconds;
 
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+                document.getElementById("timer").innerText =
+                    minutes + ":" + displaySeconds + " remaining";
+            }
 
-        document.getElementById("timer").innerText =
-            minutes + ":" + seconds + " remaining";
-    }
 
-    if (timeLeft <= 0) {
+            if (timeLeft <= 0 && !finished) {
 
-        document.getElementById("timer").innerText =
-            "You can continue!";
+                finished = true;
+                isPlaying = false;
 
-        document.getElementById("continueBtn").disabled = false;
-    }
+                document.getElementById("timer").innerText =
+                    "5 minutes completed!";
 
-}, 1000);
+                document.getElementById("status").innerText =
+                    "You can continue.";
 
-document.getElementById("continueBtn").onclick = function() {
+                document.getElementById("continueBtn").disabled = false;
+            }
 
-    window.location.href = "movie1.html";
+        }, 1000);
 
-};
 
-</script>
+        document.getElementById("continueBtn").onclick = function() {
+
+            window.location.href = "movie1.html";
+
+        };
+
+    </script>
 
 </body>
 </html>
