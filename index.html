@@ -15,10 +15,6 @@
             padding: 30px 15px;
         }
 
-        h1 {
-            font-size: 32px;
-        }
-
         .subscribe {
             display: inline-block;
             background: #ff0000;
@@ -28,16 +24,13 @@
             text-decoration: none;
             font-size: 19px;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 20px;
         }
 
-        .subscribe:hover {
-            background: #cc0000;
-        }
-
-        .confirm {
-            display: block;
-            margin: 15px auto;
+        #unlockBtn {
+            display: none;
+            background: white;
+            color: black;
             padding: 14px 25px;
             font-size: 18px;
             border: none;
@@ -49,38 +42,80 @@
 
 <body>
 
-    <h1>🎬 Arno Movies</h1>
+<h1>🎬 Arno Movies</h1>
 
-    <h2>Subscribe to Continue</h2>
+<h2>Subscribe to Continue</h2>
 
-    <p>
-        Subscribe to our YouTube channel to continue.
-    </p>
+<p>
+    Step 1: Visit our YouTube channel and subscribe.
+</p>
 
-    <a
-        class="subscribe"
-        href="https://youtube.com/@arno_movies_82"
-        target="_blank">
-        🔴 Subscribe to Arno Movies
-    </a>
+<a
+    class="subscribe"
+    href="https://youtube.com/@arno_movies_82"
+    target="_blank"
+    onclick="channelOpened()">
 
-    <button
-        class="confirm"
-        onclick="continueToVideo()">
-        ✅ I Have Subscribed
-    </button>
+    🔴 Subscribe to Arno Movies
+
+</a>
+
+<p id="message">
+    You must visit our YouTube channel first.
+</p>
+
+<button id="unlockBtn" onclick="continueToVideo()">
+    ✅ Continue
+</button>
 
 
-    <script>
+<script>
 
-        function continueToVideo() {
+function channelOpened() {
 
-            window.location.href =
-                "watch.html?v=movie1";
+    sessionStorage.setItem(
+        "channelVisited",
+        "yes"
+    );
 
-        }
+}
 
-    </script>
+
+/* Check when visitor returns */
+
+window.addEventListener("pageshow", function() {
+
+    checkChannel();
+
+});
+
+
+function checkChannel() {
+
+    const visited =
+        sessionStorage.getItem("channelVisited");
+
+    if (visited === "yes") {
+
+        document.getElementById("unlockBtn").style.display =
+            "inline-block";
+
+        document.getElementById("message").innerText =
+            "✅ You visited our YouTube channel. You can continue.";
+
+    }
+
+}
+
+
+function continueToVideo() {
+
+    window.location.href =
+        "index.html?v=movie1";
+
+}
+
+</script>
 
 </body>
 </html>
