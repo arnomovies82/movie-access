@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Access</title>
+</head>
+
+<body>
+
+    <h1>Watch to Continue</h1>
+
+    <p>Watch the video before continuing.</p>
+
+    <div id="player"></div>
+
+    <p id="timer">Loading...</p>
+
+    <button id="continueBtn" disabled>
+        Continue
+    </button>
+
+    <script>
+        const videos = {
+            movie1: {
+                youtube: "YOUR_YOUTUBE_VIDEO_ID",
+                destination: "movie1.html"
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const movie = params.get("v") || "movie1";
+
+        const selected = videos[movie];
+
+        if (!selected) {
+            document.body.innerHTML = "<h1>Video not found</h1>";
+        } else {
+            document.getElementById("timer").innerText =
+                "Your video is ready.";
+        }
+    </script>
+
+</body>
+</html>
