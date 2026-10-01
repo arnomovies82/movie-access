@@ -2,105 +2,83 @@
 <html>
 <head>
     <title>Movie Access</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-
-        #player {
-            width: 100%;
-            max-width: 700px;
-            margin: auto;
-        }
-
-        #timer {
-            font-size: 28px;
-            margin: 20px;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 18px;
-        }
-    </style>
 </head>
 
-<body>
+<body style="text-align:center; font-family:Arial;">
 
-    <h1>Watch to Continue</h1>
+<h1>Watch Video</h1>
 
-    <div id="player"></div>
+<div id="player"></div>
 
-    <div id="timer">0:10 remaining</div>
+<h2 id="timer">10 seconds remaining</h2>
 
-    <button id="continueBtn" disabled>
-        Continue
-    </button>
+<button id="continueBtn" disabled>
+    Continue
+</button>
 
-    <script>
-        let timeLeft = 10;
-        let timerRunning = false;
+<script src="https://www.youtube.com/iframe_api"></script>
 
-        const timer = document.getElementById("timer");
-        const button = document.getElementById("continueBtn");
+<script>
 
-        // Load YouTube API
-        let tag = document.createElement("script");
-        tag.src = "https://www.youtube.com/iframe_api";
-        document.head.appendChild(tag);
+let player;
+let timeLeft = 10;
+let playing = false;
 
-        let player;
+function onYouTubeIframeAPIReady() {
 
-        function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
 
-            player = new YT.Player("player", {
-                videoId: "DEvz0fdvP5s",
+        height: '315',
+        width: '560',
 
-                events: {
-                    onStateChange: onPlayerStateChange
-                }
-            });
+        videoId: 'DEvz0fdvP5s',
+
+        events: {
+            'onStateChange': playerState
         }
+    });
+}
 
-        function onPlayerStateChange(event) {
+function playerState(event) {
 
-            if (event.data === YT.PlayerState.PLAYING) {
-                timerRunning = true;
-            } else {
-                timerRunning = false;
-            }
-        }
+    if (event.data === YT.PlayerState.PLAYING) {
 
-        setInterval(function() {
+        playing = true;
 
-            if (timerRunning && timeLeft > 0) {
+    } else {
 
-                timeLeft--;
+        playing = false;
+    }
+}
 
-                let minutes = Math.floor(timeLeft / 60);
-                let seconds = timeLeft % 60;
+setInterval(function() {
 
-                seconds = seconds < 10 ? "0" + seconds : seconds;
+    if (playing && timeLeft > 0) {
 
-                timer.innerText =
-                    minutes + ":" + seconds + " remaining";
+        timeLeft--;
 
-                if (timeLeft <= 0) {
+        document.getElementById("timer").innerText =
+            timeLeft + " seconds remaining";
 
-                    timer.innerText = "You can continue!";
-                    button.disabled = false;
-                }
-            }
+    }
 
-        }, 1000);
+    if (timeLeft <= 0) {
 
-        button.onclick = function() {
-            window.location.href = "movie1.html";
-        };
-    </script>
+        document.getElementById("timer").innerText =
+            "You can continue!";
+
+        document.getElementById("continueBtn").disabled = false;
+    }
+
+}, 1000);
+
+document.getElementById("continueBtn").onclick = function() {
+
+    window.location.href = "movie1.html";
+
+};
+
+</script>
 
 </body>
 </html>
